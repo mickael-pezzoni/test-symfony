@@ -1,0 +1,27 @@
+version: "3.1"
+
+volumes: 
+  db_data:
+
+
+services:
+   
+  db:
+    image: mariadb:${DATABASE_VERSION}
+    restart: always
+    volumes: 
+      - db_data:/var/lib/mysql:z
+    ports: 
+    - ${DATABASE_PORT}:${DATABASE_PORT}
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DATABASE_PASSWORD}
+
+  admin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - 8080:80
+    environment:
+      - PMA_ARBITRARY=1
+    depends_on: 
+      - db 
